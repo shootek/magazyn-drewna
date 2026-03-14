@@ -1,0 +1,15 @@
+C:\Users\mateu\source\repos\MagazynDrewna\MagazynDrewna\bin\Debug\MagazynDrewna.exe.config
+C:\Users\mateu\source\repos\MagazynDrewna\MagazynDrewna\bin\Debug\MagazynDrewna.exe
+C:\Users\mateu\source\repos\MagazynDrewna\MagazynDrewna\bin\Debug\MagazynDrewna.pdb
+C:\Users\mateu\source\repos\MagazynDrewna\MagazynDrewna\obj\Debug\MagazynDrewna.csproj.AssemblyReference.cache
+C:\Users\mateu\source\repos\MagazynDrewna\MagazynDrewna\obj\Debug\MainWindow.g.cs
+C:\Users\mateu\source\repos\MagazynDrewna\MagazynDrewna\obj\Debug\App.g.cs
+C:\Users\mateu\source\repos\MagazynDrewna\MagazynDrewna\obj\Debug\MagazynDrewna_MarkupCompile.cache
+C:\Users\mateu\source\repos\MagazynDrewna\MagazynDrewna\obj\Debug\MagazynDrewna_MarkupCompile.lref
+C:\Users\mateu\source\repos\MagazynDrewna\MagazynDrewna\obj\Debug\MainWindow.baml
+C:\Users\mateu\source\repos\MagazynDrewna\MagazynDrewna\obj\Debug\MagazynDrewna.g.resources
+C:\Users\mateu\source\repos\MagazynDrewna\MagazynDrewna\obj\Debug\MagazynDrewna.Properties.Resources.resources
+C:\Users\mateu\source\repos\MagazynDrewna\MagazynDrewna\obj\Debug\MagazynDrewna.csproj.GenerateResource.cache
+C:\Users\mateu\source\repos\MagazynDrewna\MagazynDrewna\obj\Debug\MagazynDrewna.csproj.CoreCompileInputs.cache
+C:\Users\mateu\source\repos\MagazynDrewna\MagazynDrewna\obj\Debug\MagazynDrewna.exe
+C:\Users\mateu\source\repos\MagazynDrewna\MagazynDrewna\obj\Debug\MagazynDrewna.pdb
