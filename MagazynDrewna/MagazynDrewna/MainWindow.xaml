@@ -4,9 +4,20 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Magazyn Drewna" Height="450" Width="900">
-    <Grid Margin="10">
+        Title="Magazyn Drewna" Height="500" Width="950">
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
+        <Style x:Key="PreviewPanelStyle" TargetType="StackPanel">
+            <Setter Property="Visibility" Value="Visible"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsEditing}" Value="True">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
 
+    <Grid Margin="10">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="10" />
@@ -30,13 +41,14 @@
                   AutoGenerateColumns="False"
                   IsReadOnly="True"
                   SelectionMode="Single"
+                  IsEnabled="{Binding IsPreviewMode}"
                   Margin="5">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="50"/>
                 <DataGridTextColumn Header="Nazwa" Binding="{Binding Nazwa}" Width="*"/>
                 <DataGridTextColumn Header="Gatunek" Binding="{Binding Gatunek}" Width="*"/>
-                <DataGridTextColumn Header="Długość (m)" Binding="{Binding Dlugosc}" Width="100"/>
-                <DataGridTextColumn Header="Ilość" Binding="{Binding Ilosc}" Width="80"/>
+                <DataGridTextColumn Header="Dlugosc (m)" Binding="{Binding Dlugosc}" Width="100"/>
+                <DataGridTextColumn Header="Ilosc" Binding="{Binding Ilosc}" Width="80"/>
                 <DataGridTextColumn Header="Lokalizacja" Binding="{Binding Lokalizacja}" Width="*"/>
             </DataGrid.Columns>
         </DataGrid>
@@ -44,39 +56,65 @@
         <GridSplitter Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch"/>
 
         <StackPanel Grid.Row="1" Grid.Column="2" Margin="10">
+            <TextBlock Text="{Binding FormTitle}" FontSize="18" Margin="0,0,0,10"/>
 
-            <TextBlock Text="Formularz" FontSize="18" Margin="0,0,0,10"/>
+            <TextBlock Text="{Binding ErrorMessage}" Foreground="DarkRed" TextWrapping="Wrap" Margin="0,0,0,8"/>
 
-            <TextBlock Text="Nazwa"/>
-            <TextBox Margin="0,0,0,10"
-                     Text="{Binding SelectedWood.Nazwa, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=''}"/>
+            <StackPanel Style="{StaticResource PreviewPanelStyle}">
+                <TextBlock Text="Nazwa"/>
+                <TextBox Margin="0,0,0,10" IsReadOnly="True"
+                         Text="{Binding SelectedWood.Nazwa, TargetNullValue=''}"/>
 
-            <TextBlock Text="Gatunek"/>
-            <ComboBox Margin="0,0,0,10"
-                      ItemsSource="{Binding Gatunki}"
-                      SelectedItem="{Binding SelectedWood.Gatunek, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBlock Text="Gatunek"/>
+                <TextBox Margin="0,0,0,10" IsReadOnly="True"
+                         Text="{Binding SelectedWood.Gatunek, TargetNullValue=''}"/>
 
-            <TextBlock Text="Długość (m)"/>
-            <TextBox Margin="0,0,0,10"
-                     Text="{Binding SelectedWood.Dlugosc, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}"/>
+                <TextBlock Text="Dlugosc (m)"/>
+                <TextBox Margin="0,0,0,10" IsReadOnly="True"
+                         Text="{Binding SelectedWood.Dlugosc, TargetNullValue=0}"/>
 
-            <TextBlock Text="Ilość"/>
-            <TextBox Margin="0,0,0,10"
-                     Text="{Binding SelectedWood.Ilosc, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}"/>
+                <TextBlock Text="Ilosc"/>
+                <TextBox Margin="0,0,0,10" IsReadOnly="True"
+                         Text="{Binding SelectedWood.Ilosc, TargetNullValue=0}"/>
 
-            <TextBlock Text="Lokalizacja"/>
-            <TextBox Margin="0,0,0,10"
-                     Text="{Binding SelectedWood.Lokalizacja, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=''}"/>
+                <TextBlock Text="Lokalizacja"/>
+                <TextBox Margin="0,0,0,10" IsReadOnly="True"
+                         Text="{Binding SelectedWood.Lokalizacja, TargetNullValue=''}"/>
 
-            <StackPanel Orientation="Horizontal">
-                <Button Content="Dodaj"
-                        Width="80"
-                        Margin="5"
-                        Command="{Binding AddWoodCommand}"/>
-                <Button Content="Usuń"
-                        Width="80"
-                        Margin="5"
-                        Command="{Binding DeleteWoodCommand}"/>
+                <StackPanel Orientation="Horizontal">
+                    <Button Content="Nowy" Width="80" Margin="5" Command="{Binding BeginAddCommand}"/>
+                    <Button Content="Edytuj" Width="80" Margin="5" Command="{Binding BeginEditCommand}"/>
+                    <Button Content="Usun" Width="80" Margin="5" Command="{Binding DeleteWoodCommand}"/>
+                </StackPanel>
+            </StackPanel>
+
+            <StackPanel Visibility="{Binding IsEditing, Converter={StaticResource BoolToVisibility}}">
+                <TextBlock Text="Nazwa"/>
+                <TextBox Margin="0,0,0,10"
+                         Text="{Binding EditNazwa, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <TextBlock Text="Gatunek"/>
+                <ComboBox Margin="0,0,0,10"
+                          ItemsSource="{Binding Gatunki}"
+                          SelectedItem="{Binding EditGatunek, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <TextBlock Text="Dlugosc (m)"/>
+                <TextBox Margin="0,0,0,10"
+                         Text="{Binding EditDlugosc, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <TextBlock Text="Ilosc"/>
+                <TextBox Margin="0,0,0,10"
+                         Text="{Binding EditIlosc, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <TextBlock Text="Lokalizacja"/>
+                <ComboBox Margin="0,0,0,10"
+                          ItemsSource="{Binding Lokalizacje}"
+                          SelectedItem="{Binding EditLokalizacja, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <StackPanel Orientation="Horizontal">
+                    <Button Content="OK" Width="80" Margin="5" Command="{Binding SaveCommand}"/>
+                    <Button Content="Anuluj" Width="80" Margin="5" Command="{Binding CancelCommand}"/>
+                </StackPanel>
             </StackPanel>
         </StackPanel>
     </Grid>
