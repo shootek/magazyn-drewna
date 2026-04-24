@@ -2,7 +2,8 @@
 
 Magazyn Drewna
 
-Aplikacja desktopowa WPF do zarzadzania stanem magazynu drewna. Program pozwala przegladac liste pozycji, dodawac nowe rekordy, edytowac dane, usuwac elementy z potwierdzeniem oraz walidowac dane wejsciowe. Projekt zostal wykonany w architekturze MVVM (View + ViewModel + Model), z danymi przechowywanymi w pamieci.
+Aplikacja desktopowa stworzona w technologii WPF służąca do zarządzania stanem magazynu drewna. Program umożliwia wygodne przeglądanie listy dostępnych pozycji magazynowych oraz wykonywanie podstawowych operacji CRUD (Create, Read, Update, Delete).
+Użytkownik może dodawać nowe rekordy zawierające informacje o drewnie (np. gatunek, ilość, wymiary), edytować istniejące dane oraz usuwać wybrane elementy z dodatkowym potwierdzeniem, co zapobiega przypadkowej utracie danych. Aplikacja zawiera również mechanizmy walidacji danych wejściowych, które zapewniają poprawność i spójność wprowadzanych informacji.
 
 Glowne funkcje aplikacji
 - Lista elementow magazynowych w tabeli (`DataGrid`).
