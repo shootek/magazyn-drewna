@@ -18,8 +18,7 @@ Podzial pracy
 - Krok 2 (3. zjazd) - Layout XAML, widok listy i formularza, dane testowe.
 - Krok 3 (5. zjazd) - CRUD w pamieci, Data Binding, MVVM.
 - Krok 4 (6. zjazd) - Rozbudowa interakcji, komendy, walidacja, obsluga bledow.
-- Krok 4.5 (7. zjazd) - [opcjonalne konsultacje]
-- Krok 5 (8. zjazd) - [do realizacji]
+- Krok 5 (8. zjazd) - Trwałość danych, pełne MVP
 - Krok 6 (9. zjazd) - [do realizacji]
 - Krok 7 (10. zjazd) - [do realizacji]
 
