@@ -13,7 +13,7 @@ Glowne funkcje aplikacji
 - Usuwanie elementu z oknem potwierdzenia.
 - Walidacja danych (nazwa, liczby, lokalizacja, gatunek) i komunikaty bledow.
 
-
+Postęp prac
 - Krok 1 (1. zjazd) - Wybor tematu i zakresu projektu.
 - Krok 2 (3. zjazd) - Layout XAML, widok listy i formularza, dane testowe.
 - Krok 3 (5. zjazd) - CRUD w pamieci, Data Binding, MVVM.
