@@ -3,21 +3,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MagazynDrewna"
         mc:Ignorable="d"
-        Title="Magazyn Drewna" Height="500" Width="950">
-    <Window.Resources>
-        <BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
-        <Style x:Key="PreviewPanelStyle" TargetType="StackPanel">
-            <Setter Property="Visibility" Value="Visible"/>
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding IsEditing}" Value="True">
-                    <Setter Property="Visibility" Value="Collapsed"/>
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
-    </Window.Resources>
-
+        Title="Magazyn Drewna" Height="520" Width="980">
     <Grid Margin="10">
+        
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="10" />
@@ -25,7 +15,9 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+
         </Grid.RowDefinitions>
 
         <TextBlock Text="Magazyn Drewna"
@@ -34,88 +26,143 @@
                    Margin="5"
                    Grid.ColumnSpan="3"/>
 
-        <DataGrid Grid.Row="1"
+        <Grid Grid.Row="1" Grid.ColumnSpan="3" Margin="5,0,5,8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150"/>
+                <ColumnDefinition Width="120"/>
+                <ColumnDefinition Width="120"/>
+                <ColumnDefinition Width="140"/>
+                <ColumnDefinition Width="110"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBox x:Name="SearchNameBox"
+                     Grid.Column="0"
+                     Margin="0,0,8,0"
+                     VerticalContentAlignment="Center"
+                     ToolTip="Szukaj po nazwie"
+                     TextChanged="FilterChanged"/>
+
+            <ComboBox x:Name="FilterGatunekBox"
+                      Grid.Column="1"
+                      Margin="0,0,8,0"
+                      SelectionChanged="FilterChanged">
+                <ComboBoxItem Content="Wszystkie" IsSelected="True"/>
+                <ComboBoxItem Content="Iglaste"/>
+                <ComboBoxItem Content="Liściaste"/>
+            </ComboBox>
+
+            <ComboBox x:Name="FilterLokalizacjaBox"
+                      Grid.Column="2"
+                      Margin="0,0,8,0"
+                      SelectionChanged="FilterChanged">
+                <ComboBoxItem Content="Wszystkie" IsSelected="True"/>
+                <ComboBoxItem Content="Magazyn A"/>
+                <ComboBoxItem Content="Magazyn B"/>
+                <ComboBoxItem Content="Magazyn C"/>
+                <ComboBoxItem Content="Magazyn D"/>
+            </ComboBox>
+
+            <ComboBox x:Name="SortByBox"
+                      Grid.Column="3"
+                      Margin="0,0,8,0"
+                      SelectionChanged="FilterChanged">
+                <ComboBoxItem Content="Sortuj: Nazwa" IsSelected="True"/>
+                <ComboBoxItem Content="Sortuj: Długość"/>
+                <ComboBoxItem Content="Sortuj: Ilość"/>
+            </ComboBox>
+
+            <ComboBox x:Name="SortDirectionBox"
+                      Grid.Column="4"
+                      Margin="0,0,8,0"
+                      SelectionChanged="FilterChanged">
+                <ComboBoxItem Content="Rosnąco" IsSelected="True"/>
+                <ComboBoxItem Content="Malejąco"/>
+            </ComboBox>
+
+            <Button Grid.Column="5"
+                    Content="Wyczyść filtry"
+                    Padding="10,2"
+                    Command="{x:Static local:MainWindow.ClearFiltersCommand}"/>
+
+        </Grid>
+
+        <DataGrid x:Name="WoodGrid"
+                  Grid.Row="2"
                   Grid.Column="0"
-                  ItemsSource="{Binding Woods}"
-                  SelectedItem="{Binding SelectedWood, Mode=TwoWay}"
                   AutoGenerateColumns="False"
-                  IsReadOnly="True"
-                  SelectionMode="Single"
-                  IsEnabled="{Binding IsPreviewMode}"
+                  SelectionChanged="WoodGrid_SelectionChanged"
                   Margin="5">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="50"/>
                 <DataGridTextColumn Header="Nazwa" Binding="{Binding Nazwa}" Width="*"/>
                 <DataGridTextColumn Header="Gatunek" Binding="{Binding Gatunek}" Width="*"/>
-                <DataGridTextColumn Header="Dlugosc (m)" Binding="{Binding Dlugosc}" Width="100"/>
-                <DataGridTextColumn Header="Ilosc" Binding="{Binding Ilosc}" Width="80"/>
+                <DataGridTextColumn Header="Długość (m)" Binding="{Binding Dlugosc}" Width="100"/>
+                <DataGridTextColumn Header="Ilość" Binding="{Binding Ilosc}" Width="80"/>
                 <DataGridTextColumn Header="Lokalizacja" Binding="{Binding Lokalizacja}" Width="*"/>
+                
             </DataGrid.Columns>
         </DataGrid>
 
-        <GridSplitter Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch"/>
+        <GridSplitter Grid.Column="1" Grid.Row="2" HorizontalAlignment="Stretch"/>
 
-        <StackPanel Grid.Row="1" Grid.Column="2" Margin="10">
-            <TextBlock Text="{Binding FormTitle}" FontSize="18" Margin="0,0,0,10"/>
+        <StackPanel Grid.Row="2" Grid.Column="2" Margin="10">
 
-            <TextBlock Text="{Binding ErrorMessage}" Foreground="DarkRed" TextWrapping="Wrap" Margin="0,0,0,8"/>
+            <TextBlock x:Name="FormTitleText" Text="Formularz - podgląd" FontSize="18" Margin="0,0,0,10"/>
 
-            <StackPanel Style="{StaticResource PreviewPanelStyle}">
-                <TextBlock Text="Nazwa"/>
-                <TextBox Margin="0,0,0,10" IsReadOnly="True"
-                         Text="{Binding SelectedWood.Nazwa, TargetNullValue=''}"/>
+            <TextBlock Text="Nazwa"/>
+            <TextBox x:Name="NazwaBox" Margin="0,0,0,10"/>
 
-                <TextBlock Text="Gatunek"/>
-                <TextBox Margin="0,0,0,10" IsReadOnly="True"
-                         Text="{Binding SelectedWood.Gatunek, TargetNullValue=''}"/>
+            <TextBlock Text="Gatunek"/>
+            <ComboBox x:Name="GatunekBox" Margin="0,0,0,10">
+                <ComboBoxItem Content="Iglaste"/>
+                <ComboBoxItem Content="Liściaste"/>
+            </ComboBox>
 
-                <TextBlock Text="Dlugosc (m)"/>
-                <TextBox Margin="0,0,0,10" IsReadOnly="True"
-                         Text="{Binding SelectedWood.Dlugosc, TargetNullValue=0}"/>
+            <TextBlock Text="Długość (m)"/>
+            <TextBox x:Name="DlugoscBox" Margin="0,0,0,10"/>
 
-                <TextBlock Text="Ilosc"/>
-                <TextBox Margin="0,0,0,10" IsReadOnly="True"
-                         Text="{Binding SelectedWood.Ilosc, TargetNullValue=0}"/>
+            <TextBlock Text="Ilość"/>
+            <TextBox x:Name="IloscBox" Margin="0,0,0,10"/>
 
-                <TextBlock Text="Lokalizacja"/>
-                <TextBox Margin="0,0,0,10" IsReadOnly="True"
-                         Text="{Binding SelectedWood.Lokalizacja, TargetNullValue=''}"/>
+            <TextBlock Text="Lokalizacja"/>
+            <ComboBox x:Name="LokalizacjaBox" Margin="0,0,0,10">
+                <ComboBoxItem Content="Magazyn A"/>
+                <ComboBoxItem Content="Magazyn B"/>
+                <ComboBoxItem Content="Magazyn C"/>
+                <ComboBoxItem Content="Magazyn D"/>
+            </ComboBox>
 
-                <StackPanel Orientation="Horizontal">
-                    <Button Content="Nowy" Width="80" Margin="5" Command="{Binding BeginAddCommand}"/>
-                    <Button Content="Edytuj" Width="80" Margin="5" Command="{Binding BeginEditCommand}"/>
-                    <Button Content="Usun" Width="80" Margin="5" Command="{Binding DeleteWoodCommand}"/>
-                </StackPanel>
+            <StackPanel x:Name="PreviewButtonsPanel" Orientation="Horizontal">
+                <Button Content="Nowy"
+                        Width="80"
+                        Margin="5"
+                        Command="{x:Static local:MainWindow.NewCommand}"/>
+                <Button Content="Edytuj"
+                        Width="80"
+                        Margin="5"
+                        Command="{x:Static local:MainWindow.EditCommand}"/>
+                <Button Content="Usuń"
+                        Width="80"
+                        Margin="5"
+                        Command="{x:Static local:MainWindow.DeleteCommand}"/>
             </StackPanel>
 
-            <StackPanel Visibility="{Binding IsEditing, Converter={StaticResource BoolToVisibility}}">
-                <TextBlock Text="Nazwa"/>
-                <TextBox Margin="0,0,0,10"
-                         Text="{Binding EditNazwa, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-
-                <TextBlock Text="Gatunek"/>
-                <ComboBox Margin="0,0,0,10"
-                          ItemsSource="{Binding Gatunki}"
-                          SelectedItem="{Binding EditGatunek, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-
-                <TextBlock Text="Dlugosc (m)"/>
-                <TextBox Margin="0,0,0,10"
-                         Text="{Binding EditDlugosc, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-
-                <TextBlock Text="Ilosc"/>
-                <TextBox Margin="0,0,0,10"
-                         Text="{Binding EditIlosc, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-
-                <TextBlock Text="Lokalizacja"/>
-                <ComboBox Margin="0,0,0,10"
-                          ItemsSource="{Binding Lokalizacje}"
-                          SelectedItem="{Binding EditLokalizacja, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-
-                <StackPanel Orientation="Horizontal">
-                    <Button Content="OK" Width="80" Margin="5" Command="{Binding SaveCommand}"/>
-                    <Button Content="Anuluj" Width="80" Margin="5" Command="{Binding CancelCommand}"/>
-                </StackPanel>
+            <StackPanel x:Name="EditButtonsPanel" Orientation="Horizontal" Visibility="Collapsed">
+                <Button Content="OK"
+                        Width="80"
+                        Margin="5"
+                        Command="{x:Static local:MainWindow.SaveCommand}"/>
+                <Button Content="Anuluj"
+                        Width="80"
+                        Margin="5"
+                        Command="{x:Static local:MainWindow.CancelCommand}"/>
             </StackPanel>
+
         </StackPanel>
+
+        
+        
     </Grid>
 </Window>
