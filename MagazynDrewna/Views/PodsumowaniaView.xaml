@@ -1,0 +1,141 @@
+<UserControl x:Class="MagazynDrewna.Views.PodsumowaniaView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="5">
+        <StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                <TextBlock Text="Podsumowania" FontSize="18" FontWeight="Bold" VerticalAlignment="Center"/>
+                <Button Content="Odśwież" Margin="15,0,0,0" Padding="12,4" Click="Refresh_Click"/>
+                <Button Content="Eksport CSV" Margin="8,0,0,0" Padding="12,4" Click="ExportCsv_Click"/>
+            </StackPanel>
+
+            <TextBlock Text="Stan magazynu" Style="{StaticResource SectionHeaderStyle}"/>
+
+            <UniformGrid Columns="4" Margin="0,0,0,12">
+                <Border Style="{StaticResource StatCardStyle}">
+                    <StackPanel>
+                        <TextBlock Text="Łączna ilość sztuk" Style="{StaticResource StatLabelStyle}"/>
+                        <TextBlock x:Name="TotalSztukText" Text="—" Style="{StaticResource StatValueStyle}"/>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource StatCardStyle}">
+                    <StackPanel>
+                        <TextBlock Text="Metry bieżące" Style="{StaticResource StatLabelStyle}"/>
+                        <TextBlock x:Name="TotalMbText" Text="—" Style="{StaticResource StatValueStyle}"/>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource StatCardStyle}">
+                    <StackPanel>
+                        <TextBlock Text="Liczba pozycji" Style="{StaticResource StatLabelStyle}"/>
+                        <TextBlock x:Name="TotalPozycjiText" Text="—" Style="{StaticResource StatValueStyle}"/>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource StatCardStyle}">
+                    <StackPanel>
+                        <TextBlock Text="Gatunki drewna" Style="{StaticResource StatLabelStyle}"/>
+                        <TextBlock x:Name="TotalGatunkowText" Text="—" Style="{StaticResource StatValueStyle}"/>
+                    </StackPanel>
+                </Border>
+            </UniformGrid>
+
+            <Grid Margin="0,0,0,12">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="10"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="10"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0">
+                    <TextBlock Text="Według gatunku" Style="{StaticResource SubSectionHeaderStyle}"/>
+                    <DataGrid x:Name="ByGatunekGrid" AutoGenerateColumns="False" IsReadOnly="True" MaxHeight="160">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Gatunek" Binding="{Binding Nazwa}" Width="*"/>
+                            <DataGridTextColumn Header="Szt." Binding="{Binding IloscSztuk}" Width="50"/>
+                            <DataGridTextColumn Header="mb" Binding="{Binding MetryBiezace, StringFormat=N1}" Width="60"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </StackPanel>
+
+                <StackPanel Grid.Column="2">
+                    <TextBlock Text="Według lokalizacji" Style="{StaticResource SubSectionHeaderStyle}"/>
+                    <DataGrid x:Name="ByLokalizacjaGrid" AutoGenerateColumns="False" IsReadOnly="True" MaxHeight="160">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Magazyn" Binding="{Binding Nazwa}" Width="*"/>
+                            <DataGridTextColumn Header="Szt." Binding="{Binding IloscSztuk}" Width="50"/>
+                            <DataGridTextColumn Header="mb" Binding="{Binding MetryBiezace, StringFormat=N1}" Width="60"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </StackPanel>
+
+                <StackPanel Grid.Column="4">
+                    <TextBlock Text="Według nazwy" Style="{StaticResource SubSectionHeaderStyle}"/>
+                    <DataGrid x:Name="ByNazwaGrid" AutoGenerateColumns="False" IsReadOnly="True" MaxHeight="160">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Nazwa" Binding="{Binding Nazwa}" Width="*"/>
+                            <DataGridTextColumn Header="Szt." Binding="{Binding IloscSztuk}" Width="50"/>
+                            <DataGridTextColumn Header="mb" Binding="{Binding MetryBiezace, StringFormat=N1}" Width="60"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </StackPanel>
+            </Grid>
+
+            <TextBlock Text="Niski stan magazynowy (≤ 10 szt.)" Style="{StaticResource SubSectionHeaderStyle}"/>
+            <DataGrid x:Name="LowStockGrid" AutoGenerateColumns="False" IsReadOnly="True" MaxHeight="140" Margin="0,0,0,16">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Nazwa" Binding="{Binding Nazwa}" Width="*"/>
+                    <DataGridTextColumn Header="Gatunek" Binding="{Binding Gatunek}" Width="*"/>
+                    <DataGridTextColumn Header="Ilość" Binding="{Binding Ilosc}" Width="60"/>
+                    <DataGridTextColumn Header="Magazyn" Binding="{Binding Lokalizacja}" Width="*"/>
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <TextBlock Text="Dostawy" Style="{StaticResource SectionHeaderStyle}"/>
+
+            <Grid Margin="0,0,0,8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="130"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="130"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="Od:" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                <DatePicker x:Name="OdDatePicker" Grid.Column="1" Margin="0,0,12,0" SelectedDateChanged="DateFilter_Changed"/>
+                <TextBlock Grid.Column="2" Text="Do:" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                <DatePicker x:Name="DoDatePicker" Grid.Column="3" SelectedDateChanged="DateFilter_Changed"/>
+            </Grid>
+
+            <UniformGrid Columns="3" Margin="0,0,0,12">
+                <Border Style="{StaticResource StatCardStyle}">
+                    <StackPanel>
+                        <TextBlock Text="Liczba dostaw" Style="{StaticResource StatLabelStyle}"/>
+                        <TextBlock x:Name="DeliveryCountText" Text="—" Style="{StaticResource StatValueStyle}"/>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource StatCardStyle}">
+                    <StackPanel>
+                        <TextBlock Text="Przyjęte sztuki" Style="{StaticResource StatLabelStyle}"/>
+                        <TextBlock x:Name="DeliverySztukText" Text="—" Style="{StaticResource StatValueStyle}"/>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource StatCardStyle}">
+                    <StackPanel>
+                        <TextBlock Text="Przyjęte mb" Style="{StaticResource StatLabelStyle}"/>
+                        <TextBlock x:Name="DeliveryMbText" Text="—" Style="{StaticResource StatValueStyle}"/>
+                    </StackPanel>
+                </Border>
+            </UniformGrid>
+
+            <TextBlock Text="Według dostawcy" Style="{StaticResource SubSectionHeaderStyle}"/>
+            <DataGrid x:Name="ByDostawcaGrid" AutoGenerateColumns="False" IsReadOnly="True" MaxHeight="160">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Dostawca" Binding="{Binding Nazwa}" Width="*"/>
+                    <DataGridTextColumn Header="Szt." Binding="{Binding IloscSztuk}" Width="60"/>
+                    <DataGridTextColumn Header="mb" Binding="{Binding MetryBiezace, StringFormat=N1}" Width="70"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

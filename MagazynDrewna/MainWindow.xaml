@@ -1,0 +1,26 @@
+<Window x:Class="MagazynDrewna.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:views="clr-namespace:MagazynDrewna.Views"
+        Title="Magazyn Drewna" Height="580" Width="1020" MinHeight="480" MinWidth="900">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Magazyn Drewna" FontSize="24" FontWeight="Bold" Margin="5,0,5,10"/>
+
+        <TabControl x:Name="MainTabs" Grid.Row="1" SelectionChanged="MainTabs_SelectionChanged">
+            <TabItem x:Name="MagazynTabItem" Header="Magazyn">
+                <views:MagazynView x:Name="MagazynView"/>
+            </TabItem>
+            <TabItem x:Name="DostawyTabItem" Header="Dostawy">
+                <views:DostawyView x:Name="DostawyView"/>
+            </TabItem>
+            <TabItem x:Name="PodsumowaniaTabItem" Header="Podsumowania">
+                <views:PodsumowaniaView x:Name="PodsumowaniaView"/>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>

@@ -1,0 +1,121 @@
+<UserControl x:Class="MagazynDrewna.Views.MagazynView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:MagazynDrewna.Views"
+             xmlns:models="clr-namespace:MagazynDrewna.Models"
+             Focusable="True">
+    <Grid Margin="5">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Grid.ColumnSpan="3" Margin="0,0,0,8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150"/>
+                <ColumnDefinition Width="120"/>
+                <ColumnDefinition Width="120"/>
+                <ColumnDefinition Width="140"/>
+                <ColumnDefinition Width="110"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBox x:Name="SearchNameBox"
+                     Grid.Column="0"
+                     Margin="0,0,8,0"
+                     VerticalContentAlignment="Center"
+                     ToolTip="Szukaj po nazwie"
+                     TextChanged="FilterChanged"/>
+
+            <ComboBox x:Name="FilterGatunekBox" Grid.Column="1" Margin="0,0,8,0" SelectionChanged="FilterChanged"/>
+            <ComboBox x:Name="FilterLokalizacjaBox" Grid.Column="2" Margin="0,0,8,0" SelectionChanged="FilterChanged"/>
+
+            <ComboBox x:Name="SortByBox" Grid.Column="3" Margin="0,0,8,0" SelectionChanged="FilterChanged">
+                <ComboBoxItem Content="Sortuj: Nazwa" IsSelected="True"/>
+                <ComboBoxItem Content="Sortuj: Długość"/>
+                <ComboBoxItem Content="Sortuj: Ilość"/>
+            </ComboBox>
+
+            <ComboBox x:Name="SortDirectionBox" Grid.Column="4" Margin="0,0,8,0" SelectionChanged="FilterChanged">
+                <ComboBoxItem Content="Rosnąco" IsSelected="True"/>
+                <ComboBoxItem Content="Malejąco"/>
+            </ComboBox>
+
+            <StackPanel Grid.Column="5" Orientation="Horizontal">
+                <Button Content="Import CSV"
+                        Padding="10,2"
+                        Command="{x:Static local:MagazynView.ImportCsvCommand}"
+                        CommandTarget="{Binding RelativeSource={RelativeSource AncestorType=local:MagazynView}}"/>
+                <Button Content="Eksport CSV"
+                        Padding="10,2"
+                        Margin="8,0,0,0"
+                        Command="{x:Static local:MagazynView.ExportCsvCommand}"
+                        CommandTarget="{Binding RelativeSource={RelativeSource AncestorType=local:MagazynView}}"/>
+                <Button Content="Wyczyść filtry"
+                        Padding="10,2"
+                        Margin="8,0,0,0"
+                        Command="{x:Static local:MagazynView.ClearFiltersCommand}"/>
+            </StackPanel>
+        </Grid>
+
+        <DataGrid x:Name="WoodGrid"
+                  Grid.Row="1"
+                  Grid.Column="0"
+                  AutoGenerateColumns="False"
+                  SelectionChanged="WoodGrid_SelectionChanged"
+                  Margin="0,0,5,0">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="50"/>
+                <DataGridTextColumn Header="Nazwa" Binding="{Binding Nazwa}" Width="*"/>
+                <DataGridTextColumn Header="Gatunek" Binding="{Binding Gatunek}" Width="*"/>
+                <DataGridTextColumn Header="Długość (m)" Binding="{Binding Dlugosc, StringFormat=N2}" Width="100"/>
+                <DataGridTextColumn Header="Ilość" Binding="{Binding Ilosc}" Width="80"/>
+                <DataGridTextColumn Header="Lokalizacja" Binding="{Binding Lokalizacja}" Width="*"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <GridSplitter Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch"/>
+
+        <StackPanel Grid.Row="1" Grid.Column="2" Margin="10,0,0,0">
+            <TextBlock x:Name="FormTitleText" Text="Formularz - podgląd" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,10"/>
+
+            <StackPanel x:Name="FormFieldsPanel">
+                <TextBlock Text="Nazwa"/>
+                <TextBox Text="{Binding Nazwa, UpdateSourceTrigger=PropertyChanged}" Margin="0,2,0,8"/>
+
+                <TextBlock Text="Gatunek"/>
+                <ComboBox ItemsSource="{x:Static models:MagazynConstants.Gatunki}"
+                          SelectedItem="{Binding Gatunek, Mode=TwoWay}"
+                          Margin="0,2,0,8"/>
+
+                <TextBlock Text="Długość (m)"/>
+                <TextBox Text="{Binding Dlugosc, UpdateSourceTrigger=LostFocus, StringFormat=N2}" Margin="0,2,0,8"/>
+
+                <TextBlock Text="Ilość"/>
+                <TextBox Text="{Binding Ilosc, UpdateSourceTrigger=LostFocus}" Margin="0,2,0,8"/>
+
+                <TextBlock Text="Lokalizacja"/>
+                <ComboBox ItemsSource="{x:Static models:MagazynConstants.Lokalizacje}"
+                          SelectedItem="{Binding Lokalizacja, Mode=TwoWay}"
+                          Margin="0,2,0,10"/>
+            </StackPanel>
+
+            <StackPanel x:Name="PreviewButtonsPanel" Orientation="Horizontal">
+                <Button Content="Nowy" Width="80" Margin="0,0,5,0" Command="{x:Static local:MagazynView.NewCommand}"/>
+                <Button Content="Edytuj" Width="80" Margin="0,0,5,0" Command="{x:Static local:MagazynView.EditCommand}"/>
+                <Button Content="Usuń" Width="80" Command="{x:Static local:MagazynView.DeleteCommand}"/>
+            </StackPanel>
+
+            <StackPanel x:Name="EditButtonsPanel" Orientation="Horizontal" Visibility="Collapsed">
+                <Button Content="OK" Width="80" Margin="0,0,5,0" Command="{x:Static local:MagazynView.SaveCommand}"/>
+                <Button Content="Anuluj" Width="80" Command="{x:Static local:MagazynView.CancelCommand}"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</UserControl>
