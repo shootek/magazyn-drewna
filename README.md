@@ -19,8 +19,8 @@ Postęp prac
 - Krok 3 (5. zjazd) - CRUD w pamieci, Data Binding, MVVM.
 - Krok 4 (6. zjazd) - Rozbudowa interakcji, komendy, walidacja, obsluga bledow.
 - Krok 5 (8. zjazd) - Trwałość danych, pełne MVP
-- Krok 6 (9. zjazd) - [do realizacji]
-- Krok 7 (10. zjazd) - [do realizacji]
+- Krok 6 (9. zjazd) - Rozszerzenia i dopracowanie: dodatkowe funkcjonalności, poprawianie UI/UX, lepsza architektura, refaktoryzacja
+- Krok 7 (10. zjazd) - demonstracja działania, omówienie architektury, ocena wkładu indywidualnego.
 
 Jak uruchomic aplikacje
 1. Otworz `MagazynDrewna.slnx` w Visual Studio.
